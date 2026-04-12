@@ -238,7 +238,7 @@ void publishSensorData(uint16_t co2, float temp, float hum) {
     snprintf(payload, sizeof(payload),
              "{\"temperature\":%.2f,\"humidity\":%.2f,\"co2\":%d}", temp, hum,
              co2);
-    mqttClient.publish("air_analyzer/sensor/state", payload);
+    mqttClient.publish("air_analyzer/sensor/state", payload, true);
     Serial.printf("MQTT publié: %s\n", payload);
   }
 }
