@@ -203,7 +203,7 @@ void handleMQTT() {
     if ((unsigned long)(currentMillis - lastMqttReconnect) >= MQTT_RETRY_MS) {
       lastMqttReconnect = currentMillis;
 
-      String clientId = "WeatherProbe-" + String(WiFi.macAddress());
+      String clientId = "air_analyzer" + String(WiFi.macAddress());
       Serial.printf("Tentative MQTT (%s)... ", clientId.c_str());
 
       if (mqttClient.connect(clientId.c_str(), MQTT_USER, MQTT_PASS)) {
@@ -238,7 +238,7 @@ void publishSensorData(uint16_t co2, float temp, float hum) {
     snprintf(payload, sizeof(payload),
              "{\"temperature\":%.2f,\"humidity\":%.2f,\"co2\":%d}", temp, hum,
              co2);
-    mqttClient.publish("weather_probe/sensor/state", payload);
+    mqttClient.publish("air_analyzer/sensor/state", payload);
     Serial.printf("MQTT publié: %s\n", payload);
   }
 }
