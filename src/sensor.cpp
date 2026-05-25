@@ -5,12 +5,12 @@
 #include "connectivity.h"
 #include "aci.h"
 #include <Wire.h>
-#include <SensirionI2CScd4x.h>
+#include <SensirionI2cScd4x.h>
 
 // ============================================================
 // --- OBJET CAPTEUR ---
 // ============================================================
-static SensirionI2CScd4x scd4x;
+static SensirionI2cScd4x scd4x;
 
 // ============================================================
 // --- ÉTAT DU CAPTEUR ---
@@ -28,7 +28,7 @@ static bool sensorBootWait = true;
 // ============================================================
 void initSensor() {
   Wire.begin(I2C_SDA, I2C_SCL);
-  scd4x.begin(Wire);  // Pas besoin de spécifier l'adresse (0x62 par défaut)
+  scd4x.begin(Wire, 0x62);
   scd4x.stopPeriodicMeasurement();
   delay(500);
 
@@ -54,7 +54,7 @@ void handleSensorRead() {
   if ((unsigned long)(currentMillis - lastSensorReadTime) >=
       sensorCheckInterval) {
     bool ready = false;
-    scd4x.getDataReadyFlag(ready);
+    scd4x.getDataReadyStatus(ready);
 
     if (ready) {
       uint16_t co2;
